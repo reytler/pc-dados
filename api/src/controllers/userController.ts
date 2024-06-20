@@ -123,8 +123,43 @@ interface IAlterarPermissaoDTO {
 }
 
 const alterarPermissao = async (req: Request, res: Response) => {
-  const updateData: IAlterarSenhaDTO = req.body
+  const updateData: IAlterarPermissaoDTO = req.body
   const id = req.params.id
+  const usuarioLogado = req.header('x-user-id')
+
+  try {
+    const userForUpdate = await User.findOne({ _id: id })
+
+    console.log('usuarioLogado: ', usuarioLogado)
+    console.log('userForUpdate: ', userForUpdate?.usuario)
+    if (usuarioLogado == userForUpdate?.usuario) {
+      return res
+        .status(400)
+        .send({ message: 'Usuário não pode alterar a própria permissão' })
+    }
+
+    const user = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          role: updateData.novaPermissao,
+        },
+      },
+      { new: true },
+    )
+
+    if (!user) {
+      return res.status(404).send({ message: 'Usuário não encontrado' })
+    }
+
+    res.status(200).json({
+      message: `Permissão do usuário ${user!.usuario} alterada para ${
+        updateData.novaPermissao
+      }`,
+    })
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
 }
 
-export { register, login, listUsers, alterarSenha }
+export { register, login, listUsers, alterarSenha, alterarPermissao }

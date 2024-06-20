@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import {
+  alterarPermissao,
   alterarSenha,
   listUsers,
   login,
@@ -17,11 +18,19 @@ router.post('/user/criar', register)
 router.post('/user/login', login)
 
 router.get('/user/list', auth, permit(['ADMIN']), listUsers)
+
 router.patch(
   '/user/alterarsenha/:id',
   auth,
   permit(['ADMIN', 'USER']),
   alterarSenha,
+)
+
+router.patch(
+  '/user/alterarpermissao/:id',
+  auth,
+  permit(['ADMIN']),
+  alterarPermissao,
 )
 
 export default router
