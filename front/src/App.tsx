@@ -1,6 +1,4 @@
 import './App.css'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
 import { Route, Routes } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { Login } from './Pages/Login'
@@ -8,12 +6,11 @@ import { Home } from './Pages/Home'
 import { NotFound } from './Pages/NotFound'
 import { PrivateRoute } from './Pages/PrivateRoute'
 import { Usuarios } from './Pages/Usuarios'
-
-const queryClient = new QueryClient()
+import { Providers } from './Providers'
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <Providers>
       <BrowserRouter>
         <Routes>
           <Route
@@ -36,8 +33,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    </Providers>
   )
 }
 

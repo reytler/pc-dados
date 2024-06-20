@@ -11,8 +11,8 @@ function havePermission(roles: Array<string>, userRole: string): boolean {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
-  const userRole = 'ADMIN'
-  const isAuthenticated = true
+  const userRole = ''
+  const isAuthenticated = false
 
   return isAuthenticated && havePermission(roles, userRole) ? (
     children
