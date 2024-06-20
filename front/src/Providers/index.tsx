@@ -1,6 +1,6 @@
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ContextGlobalProvider } from '../Context'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 interface propsProviders {
   children: JSX.Element

@@ -2,8 +2,8 @@ import { FormEvent, useState } from 'react'
 import { Button, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap'
 import styles from './login.module.css'
 import api from '../../api/api'
-import { useMutation } from 'react-query'
 import { useNotification } from '../../Context/Notification'
+import { useMutation } from '@tanstack/react-query'
 interface LoginDTO {
   usuario: number
   senha: string
@@ -16,16 +16,16 @@ export function Login() {
 
   async function fetchLogin(loginDTO: LoginDTO): Promise<any> {
     const res = await api.post('/user/login', loginDTO)
-    console.log('RES: ', res)
+    return res.data
   }
 
   const mutationLogin = useMutation({
     mutationFn: async (loginDTO: LoginDTO) => fetchLogin(loginDTO),
-    onError: (error: any) => {
-      notify('ERROR', error.message)
+    onSuccess: async (ok) => {
+      notify('SUCCESS', 'Login realizado com sucesso')
     },
-    onSuccess: (ok) => {
-      console.log('OK: ', ok)
+    onError: async (error: any) => {
+      notify('ERROR', error.response.data.message)
     },
   })
 
