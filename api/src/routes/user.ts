@@ -14,7 +14,7 @@ router.get('/user/working', (req: Request, res: Response) => {
   res.status(200).json({ message: 'Rotas dos usuarios funcionando' })
 })
 
-router.post('/user/criar', register)
+router.post('/user/criar', auth, permit(['ADMIN']), register)
 
 router.post('/user/login', login)
 
