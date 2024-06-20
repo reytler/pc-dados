@@ -1,0 +1,22 @@
+### POST
+POST http://localhost:5000/user/criar
+Content-Type: application/json
+
+{
+    "usuario": 12345,
+    "senha": "dev252318",
+    "role": "USER"
+}
+
+### POST
+POST http://localhost:5000/user/login
+Content-Type: application/json
+
+{
+    "usuario": 12345,
+    "senha": "dev252318"
+}
+
+### GET
+GET http://localhost:5000/user/list
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoxMjMsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcxODg4NjQ5MSwiZXhwIjoxNzE4ODkwMDkxfQ.LEN43kHYdp9WCnsBiJQTMpuceFpoGni6w38LSHY9d-I
