@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express'
 import {
   alterarPermissao,
   alterarSenha,
+  ativaDesativaUsuario,
   listUsers,
   login,
   register,
@@ -31,6 +32,13 @@ router.patch(
   auth,
   permit(['ADMIN']),
   alterarPermissao,
+)
+
+router.patch(
+  '/user/alterarstatus/:id',
+  auth,
+  permit(['ADMIN']),
+  ativaDesativaUsuario,
 )
 
 export default router
