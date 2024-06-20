@@ -1,21 +1,24 @@
 import { Schema, model, Document } from 'mongoose'
 
 export interface IUser extends Document {
-  usuario: string
+  usuario: number
   senha: string
   role: string
   alterarSenha: boolean
+  ativo: boolean
 }
 
 const userSchema = new Schema<IUser>({
-  usuario: { type: String, required: true },
+  usuario: { type: Number, required: true },
   senha: { type: String, required: true },
   role: {
     type: String,
     required: true,
-    enum: ['user', 'admin'],
-    default: 'user',
+    enum: ['USER', 'ADMIN'],
+    default: 'USER',
   },
+  alterarSenha: { type: Boolean, required: false },
+  ativo: { type: Boolean, required: false },
 })
 
 const User = model<IUser>('User', userSchema)
