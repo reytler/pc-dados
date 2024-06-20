@@ -13,10 +13,20 @@ POST http://localhost:5000/user/login
 Content-Type: application/json
 
 {
-    "usuario": 12345,
-    "senha": "dev252318"
+    "usuario": 123,
+    "senha": "devdevdev"
 }
 
 ### GET
 GET http://localhost:5000/user/list
 x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoxMjMsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcxODg4NjQ5MSwiZXhwIjoxNzE4ODkwMDkxfQ.LEN43kHYdp9WCnsBiJQTMpuceFpoGni6w38LSHY9d-I
+
+### PATCH
+PATCH http://localhost:5000/user/alterarsenha/667417123685de2587f5a673
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoxMjMsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcxODg5MDIzNCwiZXhwIjoxNzE4ODkzODM0fQ.ccRuzwpxxRpJlTJ9G5dvI8Fw-E0qqEg7ASR5oE6Gh8w
+Content-Type: application/json
+
+{
+    "novaSenha": "devdevdev",
+    "alterarSenha": false
+}

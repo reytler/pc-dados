@@ -10,5 +10,3 @@ db.createUser({
 })
 
 db = db.getSiblingDB('dadospc')
-
-db.createCollection('usuarios')

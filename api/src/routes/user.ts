@@ -1,5 +1,10 @@
 import { Router, Request, Response } from 'express'
-import { listUsers, login, register } from '../controllers/userController'
+import {
+  alterarSenha,
+  listUsers,
+  login,
+  register,
+} from '../controllers/userController'
 import { auth, permit } from '../middlewares/auth'
 
 const router = Router()
@@ -12,5 +17,11 @@ router.post('/user/criar', register)
 router.post('/user/login', login)
 
 router.get('/user/list', auth, permit(['ADMIN']), listUsers)
+router.patch(
+  '/user/alterarsenha/:id',
+  auth,
+  permit(['ADMIN', 'USER']),
+  alterarSenha,
+)
 
 export default router

@@ -49,12 +49,10 @@ const login = async (req: Request, res: Response) => {
     }
 
     if (!user.ativo) {
-      return res
-        .status(400)
-        .json({
-          message:
-            'Usuário inativo, peça para o administrador ativar seu usuário.',
-        })
+      return res.status(400).json({
+        message:
+          'Usuário inativo, peça para o administrador ativar seu usuário.',
+      })
     }
 
     const token = jwt.sign(
@@ -71,12 +69,13 @@ const login = async (req: Request, res: Response) => {
 
 const listUsers = async (req: Request, res: Response) => {
   try {
-    const { usuario, role, alterarSenha } = req.query
+    const { usuario, role, alterarSenha, ativo } = req.query
     const filter: any = {}
 
     if (usuario) filter.usuario = usuario
     if (role) filter.role = role
-    if (alterarSenha) filter.alterarSenha
+    if (alterarSenha) filter.alterarSenha = alterarSenha
+    if (ativo) filter.ativo = ativo
 
     const users = await User.find(filter).select('-senha')
 
@@ -86,4 +85,46 @@ const listUsers = async (req: Request, res: Response) => {
   }
 }
 
-export { register, login, listUsers }
+interface IAlterarSenhaDTO {
+  novaSenha: string
+  alterarSenha: boolean
+}
+
+const alterarSenha = async (req: Request, res: Response) => {
+  const updateData: IAlterarSenhaDTO = req.body
+  const id = req.params.id
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          senha: await bcrypt.hash(updateData.novaSenha, 10),
+          alterarSenha: updateData.alterarSenha,
+        },
+      },
+      { new: true },
+    )
+
+    if (!user) {
+      return res.status(404).send({ message: 'Usuário não encontrado' })
+    }
+
+    res
+      .status(200)
+      .json({ message: `Senha do usuário ${user!.usuario} alterada` })
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+interface IAlterarPermissaoDTO {
+  novaPermissao: string
+}
+
+const alterarPermissao = async (req: Request, res: Response) => {
+  const updateData: IAlterarSenhaDTO = req.body
+  const id = req.params.id
+}
+
+export { register, login, listUsers, alterarSenha }
