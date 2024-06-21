@@ -1,7 +1,7 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { Login } from './Pages/Login'
+import { Login, enumRole } from './Pages/Login'
 import { Home } from './Pages/Home'
 import { NotFound } from './Pages/NotFound'
 import { PrivateRoute } from './Pages/PrivateRoute'
@@ -16,7 +16,7 @@ function App() {
           <Route
             path="/"
             element={
-              <PrivateRoute roles={['ADMIN', 'USER']}>
+              <PrivateRoute roles={[enumRole.ADMIN, enumRole.USER]}>
                 <Home />
               </PrivateRoute>
             }
@@ -25,7 +25,7 @@ function App() {
           <Route
             path="/usuarios"
             element={
-              <PrivateRoute roles={['ADMIN']}>
+              <PrivateRoute roles={[enumRole.ADMIN]}>
                 <Usuarios />
               </PrivateRoute>
             }
