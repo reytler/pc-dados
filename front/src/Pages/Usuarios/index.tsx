@@ -1,7 +1,9 @@
+import { Layout } from '../../Components/Layout'
+
 export function Usuarios() {
   return (
-    <>
-      <h1>Usuarios</h1>
-    </>
+    <Layout title="Gerenciar Usuários">
+      <p>anywhere</p>
+    </Layout>
   )
 }

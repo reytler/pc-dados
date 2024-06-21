@@ -1,7 +1,9 @@
+import { Layout } from '../../Components/Layout'
+
 export function Home() {
   return (
-    <>
-      <h1>Home</h1>
-    </>
+    <Layout title="Início">
+      <p>anywhere</p>
+    </Layout>
   )
 }
