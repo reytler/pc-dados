@@ -7,6 +7,7 @@ import { NotFound } from './Pages/NotFound'
 import { PrivateRoute } from './Pages/PrivateRoute'
 import { Usuarios } from './Pages/Usuarios'
 import { Providers } from './Providers'
+import { AlterarSenha } from './Pages/AlterarSenha'
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
             element={
               <PrivateRoute roles={[enumRole.ADMIN]}>
                 <Usuarios />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/alterarsenha"
+            element={
+              <PrivateRoute roles={[enumRole.ADMIN, enumRole.USER]}>
+                <AlterarSenha />
               </PrivateRoute>
             }
           />
