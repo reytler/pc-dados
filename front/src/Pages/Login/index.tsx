@@ -16,6 +16,7 @@ interface LoginDTO {
 }
 
 export interface Idecoded {
+  _id: string
   usuario: number
   role: string
   iat: number
