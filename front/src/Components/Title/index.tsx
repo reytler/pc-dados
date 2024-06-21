@@ -5,6 +5,7 @@ export function Title({ children }: { children: string }) {
         fontSize: '16px',
         fontWeight: 'bold',
         color: 'grey',
+        display: 'block',
       }}
     >
       {children}

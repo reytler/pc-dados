@@ -8,7 +8,7 @@ interface IpropsLayout {
 
 export function Layout({ children, title }: IpropsLayout) {
   return (
-    <div>
+    <div style={{}}>
       <NavigationBar />
       <div
         style={{
