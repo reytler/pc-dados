@@ -7,6 +7,15 @@ import {
 } from '../../Context/Notification'
 import { useEffect } from 'react'
 import { AxiosError } from 'axios'
+import { Table } from 'reactstrap'
+
+interface IUsuario {
+  _id: string
+  usuario: number
+  role: string
+  alterarSenha: boolean
+  ativo: boolean
+}
 
 export function Usuarios() {
   const { notify } = useNotification()
@@ -42,7 +51,28 @@ export function Usuarios() {
 
   return (
     <Layout title="Gerenciar Usuários">
-      <></>
+      <Table hover responsive striped>
+        <thead style={{ fontWeight: 'bold' }}>
+          <tr>
+            <th># ID</th>
+            <th>Usuário</th>
+            <th>Perfil</th>
+            <th>Alterar Senha</th>
+            <th>Ativo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {usuarios?.map((usuario: IUsuario) => (
+            <tr key={usuario._id}>
+              <td>{usuario._id}</td>
+              <td>{usuario.usuario}</td>
+              <td>{usuario.role}</td>
+              <td>{usuario.alterarSenha ? 'Sim' : 'Não'}</td>
+              <td>{usuario.ativo ? 'Sim' : 'Não'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </Layout>
   )
 }
