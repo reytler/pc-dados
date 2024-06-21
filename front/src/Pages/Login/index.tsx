@@ -1,8 +1,12 @@
 import { FormEvent, useState } from 'react'
 import { Button, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap'
+import Cookies from 'js-cookie'
 import styles from './login.module.css'
 import api from '../../api/api'
-import { useNotification } from '../../Context/Notification'
+import {
+  enumTypeNotification,
+  useNotification,
+} from '../../Context/Notification'
 import { useMutation } from '@tanstack/react-query'
 interface LoginDTO {
   usuario: number
@@ -22,10 +26,13 @@ export function Login() {
   const mutationLogin = useMutation({
     mutationFn: async (loginDTO: LoginDTO) => fetchLogin(loginDTO),
     onSuccess: async (ok) => {
-      notify('SUCCESS', 'Login realizado com sucesso')
+      Cookies.remove('token')
+      Cookies.set('token', ok.token, { expires: 1 })
+
+      notify(enumTypeNotification.SUCCESS, 'Login realizado com sucesso')
     },
     onError: async (error: any) => {
-      notify('ERROR', error.response.data.message)
+      notify(enumTypeNotification.ERROR, error.response.data.message)
     },
   })
 

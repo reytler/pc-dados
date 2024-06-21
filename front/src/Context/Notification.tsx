@@ -5,6 +5,11 @@ interface IContextNotification {
   notify: (type: string, msg: string) => void
 }
 
+export const enumTypeNotification = {
+  SUCCESS: 'SUCCESS',
+  ERROR: 'ERROR',
+}
+
 const NotificationContext = createContext<IContextNotification | undefined>(
   undefined,
 )
@@ -12,10 +17,10 @@ const NotificationContext = createContext<IContextNotification | undefined>(
 export function NotificationProvider({ children }: { children: JSX.Element }) {
   function notify(type: string, msg: string) {
     switch (type) {
-      case 'SUCCESS':
+      case enumTypeNotification.SUCCESS:
         toast.success(msg)
         break
-      case 'ERROR':
+      case enumTypeNotification.ERROR:
         toast.error(msg)
         break
       default:
