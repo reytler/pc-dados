@@ -10,5 +10,5 @@ export function useToken() {
   //@ts-ignore
   const decoded: Idecoded = decodedToken
 
-  return { decoded }
+  return { decoded, isExpired }
 }

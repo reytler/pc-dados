@@ -32,7 +32,7 @@ function App() {
             }
           />
           <Route
-            path="/alterarsenha"
+            path="/alterarsenha/:id?"
             element={
               <PrivateRoute roles={[enumRole.ADMIN, enumRole.USER]}>
                 <AlterarSenha />
