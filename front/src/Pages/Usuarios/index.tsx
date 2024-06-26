@@ -7,7 +7,8 @@ import {
 } from '../../Context/Notification'
 import { useEffect } from 'react'
 import { AxiosError } from 'axios'
-import { Table } from 'reactstrap'
+import { Button, Table } from 'reactstrap'
+import { useNavigate } from 'react-router-dom'
 
 interface IUsuario {
   _id: string
@@ -19,6 +20,7 @@ interface IUsuario {
 
 export function Usuarios() {
   const { notify } = useNotification()
+  const navigate = useNavigate()
   async function fetchUsuarios() {
     const res = api.get('/user/list')
     notify(enumTypeNotification.PROMISE, 'Buscando usuários...', res)
@@ -59,6 +61,7 @@ export function Usuarios() {
             <th>Perfil</th>
             <th>Alterar Senha</th>
             <th>Ativo</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +72,11 @@ export function Usuarios() {
               <td>{usuario.role}</td>
               <td>{usuario.alterarSenha ? 'Sim' : 'Não'}</td>
               <td>{usuario.ativo ? 'Sim' : 'Não'}</td>
+              <td>
+                <Button title="Alterar Senha" color='info' onClick={()=>navigate(`/alterarsenha/${usuario._id}`)}>
+                <i className="bi bi-key-fill"></i>
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
