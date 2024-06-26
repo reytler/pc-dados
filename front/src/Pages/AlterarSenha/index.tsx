@@ -80,7 +80,7 @@ export function AlterarSenha() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const alterarSenhaDTO: IAlterarSenhaDTO = {
-      alterarSenha: id !== undefined ? false : true,
+      alterarSenha: id !== undefined ? true : false,
       novaSenha: novaSenha
     }
     mutationAlterarSenha.mutate(alterarSenhaDTO)

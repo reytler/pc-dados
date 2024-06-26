@@ -1,13 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Layout } from '../../Components/Layout'
 import api from '../../api/api'
 import {
   enumTypeNotification,
   useNotification,
 } from '../../Context/Notification'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AxiosError } from 'axios'
-import { Button, Table } from 'reactstrap'
+import { Button, Input, Table } from 'reactstrap'
 import { useNavigate } from 'react-router-dom'
 
 interface IUsuario {
@@ -18,9 +18,35 @@ interface IUsuario {
   ativo: boolean
 }
 
+interface IAtivaDesativaDTO {
+  novoStatus: boolean
+}
+
+interface IMutationStatus {
+  ativaDesativaDTO: IAtivaDesativaDTO,
+  id: string
+}
+
 export function Usuarios() {
   const { notify } = useNotification()
   const navigate = useNavigate()
+  const queryClient = useQueryClient();
+
+  function atualizarStatusNaTela(mutationStatus: IMutationStatus){
+    queryClient.setQueryData(['usuarios'],(prev:Array<IUsuario>)=>{
+      return prev.map(usuario=>{
+        if(usuario._id !== mutationStatus.id){
+          return usuario
+        }
+
+        return {
+          ...usuario,
+          ativo: mutationStatus.ativaDesativaDTO.novoStatus
+        }
+      })
+    })
+  }
+
   async function fetchUsuarios() {
     const res = api.get('/user/list')
     notify(enumTypeNotification.PROMISE, 'Buscando usuários...', res)
@@ -28,14 +54,31 @@ export function Usuarios() {
     return response.data
   }
 
+  async function AlterarStatus(ativaDesativaDTO: IAtivaDesativaDTO, id: string):Promise<any>{
+    const promise = api.patch(`/user/alterarstatus/${id}`,ativaDesativaDTO)
+    notify(enumTypeNotification.PROMISE,`Alterando status do usuário de id: ${id}`,promise)
+    const res  = await promise
+    return res.data
+  }
+
   const {
     data: usuarios,
-    isPending,
     isError,
     error,
   } = useQuery({
     queryKey: ['usuarios'],
     queryFn: fetchUsuarios,
+  })
+
+  const mutationStatus = useMutation({
+    mutationFn: async (mutationStatusDTO: IMutationStatus)=>AlterarStatus(mutationStatusDTO.ativaDesativaDTO,mutationStatusDTO.id),
+    onSuccess:(ok:any,variables:IMutationStatus)=>{
+      notify(enumTypeNotification.SUCCESS,ok.message)
+      atualizarStatusNaTela(variables)
+    },
+    onError:(error: any)=>{
+      notify(enumTypeNotification.ERROR, error.response.data.message)
+    }
   })
 
   useEffect(() => {
@@ -45,11 +88,13 @@ export function Usuarios() {
     }
   }, [isError])
 
-  useEffect(() => {
-    if (!isPending) {
-      console.log(usuarios)
+  function handleAtivarDesativar(checked:boolean,idUser: string){
+    const mutationStatusDTO: IMutationStatus = {
+      ativaDesativaDTO: {novoStatus: checked},
+      id: idUser
     }
-  }, [usuarios, isPending])
+    mutationStatus.mutate(mutationStatusDTO)
+  }
 
   return (
     <Layout title="Gerenciar Usuários">
@@ -71,7 +116,9 @@ export function Usuarios() {
               <td>{usuario.usuario}</td>
               <td>{usuario.role}</td>
               <td>{usuario.alterarSenha ? 'Sim' : 'Não'}</td>
-              <td>{usuario.ativo ? 'Sim' : 'Não'}</td>
+              <td>
+                <Input type="checkbox" checked={usuario.ativo} onChange={(event)=>handleAtivarDesativar(event.target.checked,usuario._id)}/>
+              </td>
               <td>
                 <Button title="Alterar Senha" color='info' onClick={()=>navigate(`/alterarsenha/${usuario._id}`)}>
                 <i className="bi bi-key-fill"></i>
