@@ -9,6 +9,7 @@ export const enumTypeNotification = {
   SUCCESS: 'SUCCESS',
   ERROR: 'ERROR',
   PROMISE: 'PROMISE',
+  WARN: 'WARN',
 }
 
 const NotificationContext = createContext<IContextNotification | undefined>(
@@ -23,6 +24,20 @@ export function NotificationProvider({ children }: { children: JSX.Element }) {
         break
       case enumTypeNotification.ERROR:
         toast.error(msg)
+        break
+      case enumTypeNotification.WARN:
+        toast.custom((t)=>(
+          <p style={{
+            background:'rgba(255,0,0,0.02)',
+            borderRadius: '5px',
+            padding:'5px',
+            color:'rgba(255,0,0,0.5)'
+          }}>
+            <i className="bi bi-exclamation-triangle-fill"></i>
+            {' '}
+            Altere sua senha o mais rápido possível
+          </p>
+        ),{position:'top-center'})
         break
       case enumTypeNotification.PROMISE:
         toast.promise(promise!, {

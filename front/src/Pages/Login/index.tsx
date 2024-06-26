@@ -21,6 +21,7 @@ export interface Idecoded {
   role: string
   iat: number
   exp: number
+  alterarSenha: boolean
 }
 
 export const enumRole = {
@@ -72,6 +73,9 @@ export function Login() {
       notify(enumTypeNotification.SUCCESS, 'Login realizado com sucesso')
       if (decoded?.role !== undefined) {
         defineRouteByRole(decoded?.role)
+      }
+      if(decoded?.alterarSenha){
+        notify(enumTypeNotification.WARN,'Altere sua senha o mais rápido possível')
       }
     } catch (error) {
       console.error(error)
