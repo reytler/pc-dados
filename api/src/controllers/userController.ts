@@ -91,9 +91,21 @@ interface IAlterarSenhaDTO {
 }
 
 const alterarSenha = async (req: Request, res: Response) => {
-  const updateData: IAlterarSenhaDTO = req.body
   const id = req.params.id
-
+  const updateData: IAlterarSenhaDTO = req.body
+  try {
+    const token = req.header('x-auth-token')
+    const decoded = jwt.verify(token!, `${process.env.JWT_SECRET}`)
+    //@ts-ignore
+    if(decoded.role !== 'ADMIN' && decoded._id !== id){
+      res.status(401).json({message: 'Alteração não permitida para usuário não ADMIN'})
+      return
+    }
+    
+  } catch (error:any) {
+    res.status(500).json({ error: error.message })
+  }
+  
   try {
     const user = await User.findByIdAndUpdate(
       { _id: id },
