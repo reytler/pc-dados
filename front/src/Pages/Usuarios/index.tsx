@@ -5,12 +5,13 @@ import {
   enumTypeNotification,
   useNotification,
 } from '../../Context/Notification'
-import { useEffect, useState } from 'react'
+import { useEffect} from 'react'
 import { AxiosError } from 'axios'
 import { Button, Input, Table } from 'reactstrap'
 import { useNavigate } from 'react-router-dom'
+import { SwitchAdmin } from '../../Components/SwitchAdmin'
 
-interface IUsuario {
+export interface IUsuario {
   _id: string
   usuario: number
   role: string
@@ -98,13 +99,26 @@ export function Usuarios() {
 
   return (
     <Layout title="Gerenciar Usuários">
+      <>
+      <Button size='sm' color='primary' style={{
+        padding:'0 3px',
+        fontSize:'12px'
+      }}>
+        <i className="bi bi-person-fill-add" style={{
+          fontSize:'16px'
+        }}></i>
+        {' '}
+        Adicionar Usuário
+      </Button>
       <Table hover responsive striped>
         <thead style={{ fontWeight: 'bold' }}>
           <tr>
             <th># ID</th>
             <th>Usuário</th>
-            <th>Perfil</th>
-            <th>Alterar Senha</th>
+            <th>Admin ?</th>
+            <th 
+            title='O usuário alterou a senha depois do primeiro login com senha nova?'
+            >Senha Alterada</th>
             <th>Ativo</th>
             <th>Ações</th>
           </tr>
@@ -114,8 +128,10 @@ export function Usuarios() {
             <tr key={usuario._id}>
               <td>{usuario._id}</td>
               <td>{usuario.usuario}</td>
-              <td>{usuario.role}</td>
-              <td>{usuario.alterarSenha ? 'Sim' : 'Não'}</td>
+              <td>
+                <SwitchAdmin role={usuario.role} id={usuario._id}/>
+              </td>
+              <td>{usuario.alterarSenha ? <i className="bi bi-ban" style={{color:'red'}}></i> : <i className="bi bi-check2-circle" style={{color:'green'}}></i>}</td>
               <td>
                 <Input type="checkbox" checked={usuario.ativo} onChange={(event)=>handleAtivarDesativar(event.target.checked,usuario._id)}/>
               </td>
@@ -128,6 +144,7 @@ export function Usuarios() {
           ))}
         </tbody>
       </Table>
+      </>
     </Layout>
   )
 }
