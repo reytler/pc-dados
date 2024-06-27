@@ -32,6 +32,7 @@ export function AlterarSenha() {
   const [umaLetra,setUmaLetra] = useState(false)
   const [umNumero,setUmNumero] = useState(false)
   const [mostrarSenhas, setMostrarSenhas] = useState(false)
+  const [formValid, setFormValid] = useState(false)
   const [idParaAlterarSenha,setIdParaAlterarSenha] = useState<string>('')
   const {notify} = useNotification()
   const navigate = useNavigate()
@@ -112,9 +113,21 @@ export function AlterarSenha() {
     }
   }
 
+  function validateForm(){
+    if(comprimento && iguais && umaLetra && umNumero){
+      setFormValid(true)
+    }else{
+      setFormValid(false)
+    }
+  }
+
   useEffect(() => {
     validatePassword()
   }, [novaSenha, confirmaNovaSenha])
+
+  useEffect(()=>{
+    validateForm()
+  },[comprimento,iguais,umaLetra,umNumero])
 
   return (
     <Layout title={id !== undefined ? `Alterar Senha do id: ${id}` : "Alterar Senha"}>
@@ -181,7 +194,7 @@ export function AlterarSenha() {
           >
             <Col xs="11" sm="4" md="6" xl="3">
               <FormGroup>
-                <Button color="success">Redefinir</Button>
+                <Button color="success" disabled={!formValid}>Redefinir</Button>
               </FormGroup>
             </Col>
           </Row>
